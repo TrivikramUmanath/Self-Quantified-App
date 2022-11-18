@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset='utf-8'>
+                    <style>
+            table {
+        border: 1px solid black;
+        text-align: center;	
+    }
+    td, th {
+        border: 1px solid black;
+    }
+            </style>
+            <title>
+            {{ A }}TrendLine
+            </title>
+        </head>
+        <body>
+        <h1>{{ A }} trend</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Time_Stamp
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    {% for log in lg %}
+                    <tr>
+                        <td>
+                            {{ log['Time_Stamp'] }}
+                        </td>
+                        <td>
+                            {{ log['Value'] }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+                    <img src="/static/output.png" alt = "">
+                <br>
+                
+            <div id="Footer">
+              <a href="/Dashboard/{{id}}">Go Back</a>
+            </div>
+        </body>
+    </html>

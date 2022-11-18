@@ -1,0 +1,801 @@
+openapi: 3.0.0
+info:
+  title: Example Open API Documentation
+  version: 1.0.0
+  description: >
+    Documentation example.You can add various kinds of **documentation** here.
+
+    It takes both markdown and HTML.
+
+    <h2>ER Diagram</h2>
+
+    <img src =
+    "https://mermaid.ink/img/pako:eNqVkkFuwyAQRa9isXYu4HWyqpSNo66QqpGZOCgGrGFQZVm-e7HBauwmassG8efDPD6MonEKRSWQjhpaAiNt8EjF5A4HNxZM0NzjspJilj-0kiI5RmmLOLRlbKNhrS6iZ9K2Lc5gcCN4bAj5DYeN2oP3n462e08GdCftJO2KkIg6187tqkKKXMhMebXDevD8H_eSN1-GfluokTnO_glfjLC_7fDK5eTIuBR_IVx7a4M1g-k36jt0AX2S6m_jMRCwdvYZfbpV5EzJ7bon8Uc8L6CW9n_AfMl0dpxgpBWlMEjxlVX8fQtVjOyGc1BzegqvEDqeU5uiNfQKGE9KsyNRXaHzWAoI7OrBNqJiCria8j_OrukLrrADww"
+    />
+
+    <h2>Error Codes</h2> <table>
+
+
+    <thead>
+
+    <th>Resource</th>
+
+    <th>Error Code</th>
+
+    <th>Message</th>
+
+    </thead>
+
+    <tbody>
+
+    <tr>
+
+    <td>Resource</td>
+
+    <td>Error Codes</td>
+
+    <td>Message</td>
+
+    </tr>
+
+    </tbody>
+
+    </table>
+servers:
+  - url: https://127.0.0.1:5000/
+paths:
+  /api/user/{username}:
+    summary: End point to read,update and delete a user resource with username
+  /user:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Email:
+                type: string
+              SecretKey:
+                type: string
+              Passowrd:
+                type: string
+      responses:
+        default:
+          description: successful operation
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        '400':
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+        - user
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: logoutUser
+      produces:
+        - application/xml
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+  /user/{user_id}:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserByName
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Email:
+                type: string
+              SecretKey:
+                type: string
+              Passowrd:
+                type: string
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Email:
+                type: string
+              SecretKey:
+                type: string
+              Passowrd:
+                type: string
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+  /user/{user_id}/tracker:
+    summary: End to end for Tracker Details
+    description: End to end for Tracker Details
+    post:
+      tags:
+        - tracker
+      summary: Create Tracker
+      description: This can only be done by the logged in user.
+      operationId: createTracker
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Tracker_Id:
+                type: string
+              Tracker_Type:
+                type: string
+              Settings:
+                type: string
+      responses:
+        default:
+          description: successful operation
+  /user/{user_id}/{tracker_id}:
+    get:
+      tags:
+        - tracker
+      summary: Get Tracker Details
+      description: ''
+      operationId: GetTracker
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Tracker_Id:
+                type: string
+              Tracker_Type:
+                type: string
+              Settings:
+                type: string
+        '400':
+          description: Invalid username or Tracker_Id supplied
+        '404':
+          description: Tracker not found
+    put:
+      tags:
+        - tracker
+      summary: Update Tracker
+      description: This can only be done by the logged in user.
+      operationId: updateTracker
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+              Name:
+                type: string
+              Tracker_Id:
+                type: string
+              Tracker_Type:
+                type: string
+              Settings:
+                type: string
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - tracker
+      summary: Delete Tracker
+      description: This can only be done by the logged in user.
+      operationId: deleteTracker
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+      responses:
+        '400':
+          description: Invalid Tracker_ID supplied
+        '404':
+          description: Tracker not found
+    summary: End to End point for Posting,Getting and deleting Tracker Details
+    description: End to End point for Posting,Getting and deleting Tracker Details
+  /user/{user_id}/{tracker_id}/Logs:
+    summary: End to end for Log Details
+    description: End to end for Tracker Details
+    post:
+      tags:
+        - logs
+      summary: Create Logs
+      description: This can only be done by the logged in user with a valid Tracker.
+      operationId: createLogger
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created Logger object
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              tracker_id:
+                type: integer
+              logger_id:
+                type: integer
+              Note:
+                type: string
+              Time_Stamp:
+                type: string
+              TimeDuration:
+                type: string
+              Value:
+                type: string
+      responses:
+        default:
+          description: successful operation
+  /user/{user_id}/{tracker_id}/{logger_id}:
+    summary: End to End point for Logger Data
+    description: End to End point for Logger Data
+    get:
+      tags:
+        - logs
+      summary: Get Logs Details
+      description: ''
+      operationId: GetLogs
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+        - name : logger_id
+          type: integer
+          in: query
+          description: The Logger_id for the Log Details
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              tracker_id:
+                type: integer
+              logger_id:
+                type: integer
+              Note:
+                type: string
+              Time_Stamp:
+                type: string
+              TimeDuration:
+                type: string
+              Value:
+                type: string
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - logs
+      summary: Update Logs
+      description: This can only be done by the logged in user.
+      operationId: updateLogs
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+        - name : logger_id
+          type: integer
+          in: query
+          description: The Logger_id for the Log Details
+          required: true
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - logs
+      summary: Delete Logs
+      description: This can only be done by the logged in user.
+      operationId: deleteLogs
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+        - name : logger_id
+          type: integer
+          in: query
+          description: The Logger_id for the Log Details
+          required: true
+      responses:
+        '400':
+          description: Invalid LoggerId supplied
+        '404':
+          description: User not found
+  /user/{user_id}/{tracker_id}/Stats:
+    summary: End to End point for getting Stats
+    description: End to End point for getting Stats
+    get:
+      tags:
+        - stats
+      summary: Get Stats
+      description: ''
+      operationId: GetStats
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              Tracker_id:
+                type: integer
+              trackerName:
+                type: string
+              Value:
+                type: string
+              TimeDuration:
+                type: string
+              TimeStamp:
+                type: string
+        '400':
+          description: Invalid TrackerId supplied
+        '404':
+          description: User not found
+  /user/{user_id}/{tracker_id}/TrendLine:
+    summary: End to End point for getting TrendLines
+    description: End to End point for getting TrendLines
+    get:
+      tags:
+        - TrendLine
+      summary: Get TrendLine
+      description: ''
+      operationId: GetTrendLine
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: user_id
+          type: integer
+          in: query
+          description: The user name for login
+          required: true
+        - name: password
+          type: string
+          in: query
+          description: The password for login in clear text
+          required: true
+        - name: tracker_id
+          type: integer
+          in: query
+          description: The tracker_id for the Tracker Details
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              Tracker_id:
+                type: integer
+              trackerName:
+                type: string
+              Value:
+                type: string
+              TimeDuration:
+                type: string
+              TimeStamp:
+                type: string
+        '400':
+          description: Invalid TrackerId supplied
+        '404':
+          description: User not found
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: http://petstore.swagger.io/oauth/dialog
+    flow: implicit
+    scopes:
+      write:pets: modify pets in your account
+      read:pets: read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      petId:
+        type: integer
+        format: int64
+      quantity:
+        type: integer
+        format: int32
+      shipDate:
+        type: string
+        format: date-time
+      status:
+        type: string
+        description: Order Status
+        enum:
+          - placed
+          - approved
+          - delivered
+      complete:
+        type: boolean
+        default: false
+    xml:
+      name: Order
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: Category
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      userStatus:
+        type: integer
+        format: int32
+        description: User Status
+    xml:
+      name: User
+  Tag:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: Tag
+  Pet:
+    type: object
+    required:
+      - name
+      - photoUrls
+    properties:
+      id:
+        type: integer
+        format: int64
+      category:
+        $ref: '#/definitions/Category'
+      name:
+        type: string
+        example: doggie
+      photoUrls:
+        type: array
+        xml:
+          name: photoUrl
+          wrapped: true
+        items:
+          type: string
+      tags:
+        type: array
+        xml:
+          name: tag
+          wrapped: true
+        items:
+          $ref: '#/definitions/Tag'
+      status:
+        type: string
+        description: pet status in the store
+        enum:
+          - available
+          - pending
+          - sold
+    xml:
+      name: Pet
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
