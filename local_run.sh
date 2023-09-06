@@ -15,5 +15,5 @@ fi
 # Activate virtual env
 . .env/bin/activate
 export ENV=development
-python main.py
+python app.py
 deactivate

@@ -51,19 +51,20 @@ def forgot_password():
 @app.route("/Create",methods=["GET","POST"])
 def create():
     if request.method == "GET":
-        flag=1
+      pass
     elif request.method == "POST":
         userName = request.form.get('userid')
         name = request.form.get('name')
         Password = request.form.get('password')
         Email = request.form.get('email')
         ke=request.form.get('key')
-        if userName == '':
+        if userName =='':
             return redirect('/')
-        else:
-            new_user=User(user_id=userName,password=Password,email=Email,Name=name,SecretKey=ke)
-            db.session.add(new_user)
-            db.session.commit()
+        else:        
+          new_user=User(user_id=userName,password=Password,
+          email=Email,Name=name,SecretKey=ke)
+          db.session.add(new_user)
+          db.session.commit()
         return redirect('/')
     return render_template('Create.html')
 

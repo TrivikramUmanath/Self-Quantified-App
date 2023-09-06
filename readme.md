@@ -7,7 +7,7 @@
 
 # Replit run
 - Go to shell and run
-- Click on `mainpy` and click button run or simply go to this link https://edibleunsunginterpreter.trivikramumanat.repl.co
+- Click on `app.py` and click button run
 
 # Folder Structure
 
